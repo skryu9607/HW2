@@ -48,7 +48,7 @@ class PolicyGradient:
         while done:
             if x >= 5:
                 done = False
-            if x<0: # Sampling again
+            if x < 0: # Sampling again
                 x = np.random.uniform(0,5)
                 A = []
                 S = []
@@ -91,37 +91,38 @@ class PolicyGradient:
             MU[4].append(self.mu(4,theta))
             MU[5].append(self.mu(5,theta))
             
-            a = abs(theta - theta_old)
+            a = abs(np.subtract(theta,theta_old))
             key = 0
             for i in range(6):
                 key += a[i]
-            if key/6 < 1e-9:
+            if np.mean(key)< 1e-6:
+                print("Theta come out!")
                 break
             print(theta)
         return theta,MU
 
 def main():
-    PG = PolicyGradient(200)
+    PG = PolicyGradient(100)
     THETA,MU = PG.REINFORCE()
     print(THETA)
     plt.figure(1)
     plt.plot(range(len(MU[0])),MU[0])
-    plt.title('mu at position zero')
+    plt.title('mu at position zero and {}'.format(MU[0][-1]))
     plt.figure(2)
     plt.plot(range(len(MU[1])),MU[1])
-    plt.title('mu at position one')
+    plt.title('mu at position one and {}'.format(MU[1][-1]))
     plt.figure(3)
     plt.plot(range(len(MU[2])),MU[2])
-    plt.title('mu at position two')
+    plt.title('mu at position two and {}'.format(MU[2][-1]))
     plt.figure(4)
     plt.plot(range(len(MU[3])),MU[3])
-    plt.title('mu at position three')
+    plt.title('mu at position three and {}'.format(MU[3][-1]))
     plt.figure(5)
     plt.plot(range(len(MU[4])),MU[4])
-    plt.title('mu at position four')
+    plt.title('mu at position four and {}'.format(MU[4][-1]))
     plt.figure(6)
     plt.plot(range(len(MU[5])),MU[5])
-    plt.title('mu at position five')
+    plt.title('mu at position five and {}'.format(MU[5][-1]))
     plt.show()
     # A,S,R have the same length
 if __name__ == "__main__":
